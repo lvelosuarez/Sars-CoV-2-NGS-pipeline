@@ -31,11 +31,23 @@ rule index_genome:
 		GENOME_BWA_INDEX
 	shell:
 		"bwa index {input}; samtools faidx {input}"
+        
+rule QC:
+    input:
+		R1=FASTQ_DIR + "/{sample}_1.fastq.gz",
+		R2=FASTQ_DIR + "/{sample}_2.fastq.gz",
+    output:
+        R1="{sample}_QC1.fastq.gz",
+        R2="{sample}_QC2.fastq.gz",
+    params:
+        adapters = adapters.fa
+    shell =
+    """bbduk.sh in={input.R1} in2={input.R2} ref={params.adapters} out={output.R1} out2={output.R2} qtrim=rl trimq=20 maq=20"""
 
 rule align:
 	input:
-		R1=FASTQ_DIR + "/{sample}_1.fastq.gz",
-		R2=FASTQ_DIR + "/{sample}_2.fastq.gz",
+		R1="{sample}_QC1.fastq.gz",
+		R2="{sample}_QC2.fastq.gz",
 		index=GENOME_BWA_INDEX
 
 	output:

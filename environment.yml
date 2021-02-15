@@ -10,4 +10,5 @@ dependencies:
   - SnpSift 
   - bwa
   - bcftools
-  - tabix 
+  - tabix
+  - bbmap

@@ -40,7 +40,7 @@ rule QC:
         R1="{sample}_QC1.fastq.gz",
         R2="{sample}_QC2.fastq.gz",
     params:
-        adapters = adapters.fa
+        adapters = "adapters.fa"
     shell =
     """bbduk.sh in={input.R1} in2={input.R2} ref={params.adapters} out={output.R1} out2={output.R2} qtrim=rl trimq=20 maq=20"""
 
